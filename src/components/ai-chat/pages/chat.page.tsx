@@ -38,7 +38,7 @@ const ChatPage = () => {
   const { messageHistory, onSubmitMessage, onReceiveMessage } =
     useChatMessages();
 
-  const chatCompletionMutation = useMutation(submitChatMessage, {
+  const chatCompletionMutation = useMutation(createChatCompletion, {
     onSuccess: (data) => {
       onReceiveMessage(data.message);
       scrollToBottom(messagesContainerRef, 100).catch(console.error);
@@ -122,7 +122,7 @@ const ChatPage = () => {
   );
 };
 
-const submitChatMessage = async (
+const createChatCompletion = async (
   params: ValidationSchemaForCreateChatCompletion
 ) => {
   const response = await axios.post<ValidationSchemaForMessage>(
