@@ -54,7 +54,7 @@ export class OpenAiChatEntity {
     return messageHistory.map((historyMessage) => {
       return historyMessage.type === "ai"
         ? new AIChatMessage(historyMessage.text)
-        : new HumanChatMessage(historyMessage.type);
+        : new HumanChatMessage(historyMessage.text);
     });
   }
 }
