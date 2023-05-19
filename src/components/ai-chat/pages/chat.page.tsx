@@ -1,5 +1,5 @@
-import useScrollToBottom from "@/components/ai-chat/hooks/use-scroll-to-bottom";
-import useTextareaChatInputBehavior from "@/components/ai-chat/hooks/use-textarea-chat-input-behavior";
+import { autoAdjustHeightOfTextarea } from "@/components/ai-chat/utils/auto-adjust-textarea-height";
+import { scrollToBottom } from "@/components/ai-chat/utils/scroll-to-bottom";
 import { Layout } from "@/components/layout/layout";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,7 +19,7 @@ import {
   type StoredMessage,
 } from "langchain/schema";
 import { Loader2, Send } from "lucide-react";
-import { useRef, useState, type KeyboardEvent} from "react";
+import { useRef, useState, type KeyboardEvent, useEffect } from "react";
 
 const ChatPage = () => {
   const messagesContainerRef = useRef<HTMLElement | null>(null);
@@ -30,8 +30,10 @@ const ChatPage = () => {
     form.register("message");
 
   const message = form.watch("message");
-  useTextareaChatInputBehavior(textareaRef, message);
-  const { scrollToBottom } = useScrollToBottom(messagesContainerRef);
+
+  useEffect(() => {
+    autoAdjustHeightOfTextarea(textareaRef);
+  }, [message, textareaRef]);
 
   const { messageHistory, onSubmitMessage, onReceiveMessage } =
     useChatMessages();
@@ -39,7 +41,7 @@ const ChatPage = () => {
   const chatCompletionMutation = useMutation(submitChatMessage, {
     onSuccess: (data) => {
       onReceiveMessage(data.message);
-      scrollToBottom(100).catch(console.error);
+      scrollToBottom(messagesContainerRef, 100).catch(console.error);
     },
     onError: () => {
       toast({
@@ -57,7 +59,7 @@ const ChatPage = () => {
 
     form.setValue("message", "");
     onSubmitMessage(data.message);
-    scrollToBottom(100).catch(console.error);
+    scrollToBottom(messagesContainerRef, 100).catch(console.error);
     chatCompletionMutation.mutate(paramsForRequest);
   };
 
