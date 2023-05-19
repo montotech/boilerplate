@@ -1,6 +1,6 @@
 import { type RefObject, useEffect } from "react";
 
-const useTextareaToChatInput = (
+const useTextareaChatInputBehavior = (
   textareaRef: RefObject<HTMLTextAreaElement>,
   message: string
 ) => {
@@ -30,4 +30,4 @@ const useTextareaToChatInput = (
   }, [message, textareaRef]);
 };
 
-export default useTextareaToChatInput;
+export default useTextareaChatInputBehavior;

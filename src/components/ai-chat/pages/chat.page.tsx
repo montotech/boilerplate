@@ -1,5 +1,5 @@
 import useScrollToBottom from "@/components/ai-chat/hooks/use-scroll-to-bottom";
-import useTextareaToChatInput from "@/components/ai-chat/hooks/use-textarea-to-chat-input";
+import useTextareaChatInputBehavior from "@/components/ai-chat/hooks/use-textarea-chat-input-behavior";
 import { Layout } from "@/components/layout/layout";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,18 +19,18 @@ import {
   type StoredMessage,
 } from "langchain/schema";
 import { Loader2, Send } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef, useState, type KeyboardEvent} from "react";
 
 const ChatPage = () => {
   const messagesContainerRef = useRef<HTMLElement | null>(null);
-  const messageInputRef = useRef<HTMLTextAreaElement | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const form = useZodForm({ schema: validationSchemaForMessage });
   const { ref: formMessageRef, ...registerFormMessage } =
     form.register("message");
 
   const message = form.watch("message");
-  useTextareaToChatInput(messageInputRef, message);
+  useTextareaChatInputBehavior(textareaRef, message);
   const { scrollToBottom } = useScrollToBottom(messagesContainerRef);
 
   const { messageHistory, onSubmitMessage, onReceiveMessage } =
@@ -61,7 +61,7 @@ const ChatPage = () => {
     chatCompletionMutation.mutate(paramsForRequest);
   };
 
-  const onKeyDown = (event: React.KeyboardEvent) => {
+  const onKeyDown = (event: KeyboardEvent) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       void form.handleSubmit(onSubmit)();
@@ -96,7 +96,7 @@ const ChatPage = () => {
                 name="message"
                 ref={(htmlElement) => {
                   formMessageRef(htmlElement);
-                  messageInputRef.current = htmlElement;
+                  textareaRef.current = htmlElement;
                 }}
               />
               <Button
