@@ -9,6 +9,7 @@ import Link from "next/link";
 
 import { ActionsDropdown } from "@/components/example-posts/components/actions-dropdown";
 import { useUser } from "@clerk/clerk-react";
+import CommentSection from "@/components/example-comments/components/comment-section";
 
 const ExamplePostDetailPage = ({ id }: { id: string }) => {
   const query = api.examplePost.show.useQuery(id);
@@ -66,6 +67,7 @@ const ExamplePostDetailPage = ({ id }: { id: string }) => {
               {post.author.firstName}
             </p>
           </div>
+          <CommentSection postId={id} />
         </div>
       </div>
     </Layout>

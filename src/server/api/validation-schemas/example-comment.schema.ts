@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const validationSchemaForCreateExampleComment = z.object({
-  content: z.string().min(5),
+  content: z.string().min(1),
   postId: z.string(),
 });
 

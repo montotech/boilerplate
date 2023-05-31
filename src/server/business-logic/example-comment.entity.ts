@@ -15,7 +15,7 @@ export default class ExampleCommentEntity {
       data: {
         authorId: userId,
         postId: input.postId,
-        content: input.postId,
+        content: input.content,
       },
     });
 
@@ -87,6 +87,9 @@ export default class ExampleCommentEntity {
       take: limit + 1,
       where: {
         postId: params.postId,
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     });
 
