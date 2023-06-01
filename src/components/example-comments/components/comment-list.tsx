@@ -56,7 +56,7 @@ const CommentItem = ({
   const canEdit = item.author.id === user.id;
 
   return (
-    <div className="mt-8 flex gap-x-3">
+    <div className="border-gray mt-5 flex gap-x-3 border-t pt-5">
       <div>
         <Image
           src={user.profileImageUrl}
