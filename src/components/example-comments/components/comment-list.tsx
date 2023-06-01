@@ -11,6 +11,7 @@ import { ActionsTopbar } from "@/components/layout/actions-topbar";
 import { ExampleCommentActionsDropdown } from "@/components/example-comments/components/actions-dropdown";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
+import CommentInput from "@/components/example-comments/components/comment-input";
 
 dayjs.extend(relativeTime);
 
@@ -57,33 +58,52 @@ const CommentItem = ({
   item: ExampleComment;
   user: UserResource;
 }) => {
+  const [isEditing, setIsEditing] = React.useState(false);
+
   const canEdit = item.author.id === user.id;
 
   return (
     <div className="border-gray mt-8 flex items-start justify-between border-t ">
-      <div className="flex gap-x-3 pt-5">
-        <Image
-          src={user.profileImageUrl}
-          alt={`${user.firstName ?? "user"}'s profile picture`}
-          width={42}
-          height={42}
-          className="rounded-full"
-        />
-        <div className="flex flex-col">
-          <div className="flex flex-col ">
-            <p className="font-semibold">
-              {user.fullName} ·{" "}
-              <span className="text-sm font-thin">
-                {dayjs(item.comment.createdAt).fromNow()}
-              </span>
-            </p>
-            <p>{item.comment.content}</p>
-          </div>
+      <div className="flex w-full gap-x-3 pt-5">
+        <div>
+          <Image
+            src={user.profileImageUrl}
+            alt={`${user.firstName ?? "user"}'s profile picture`}
+            width={42}
+            height={42}
+            className="rounded-full"
+          />
         </div>
+
+        {!isEditing ? (
+          <div className="flex flex-col ">
+            <div className="flex flex-col ">
+              <p className="font-semibold">
+                {user.fullName} ·{" "}
+                <span className="text-sm font-thin">
+                  {dayjs(item.comment.createdAt).fromNow()}
+                </span>
+              </p>
+              <p>{item.comment.content}</p>
+            </div>
+          </div>
+        ) : (
+          <div className="w-full">
+            <CommentInput
+              postId={item.comment.postId}
+              commentId={item.comment.id}
+              isUpdate
+              setIsEditing={setIsEditing}
+            />
+          </div>
+        )}
       </div>
       <div>
         {canEdit && (
-          <ExampleCommentActionsDropdown commentId={item.comment.id}>
+          <ExampleCommentActionsDropdown
+            commentId={item.comment.id}
+            setIsEditing={setIsEditing}
+          >
             <Button variant="ghost" asChild>
               <div>
                 <MoreHorizontal className="h-4 w-4" />

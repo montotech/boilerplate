@@ -8,7 +8,7 @@ import { toast } from "@/components/ui/use-toast";
 import { api } from "@/lib/api";
 import { Edit, Trash2 } from "lucide-react";
 import { useRouter } from "next/router";
-import { type MouseEvent, useState } from "react";
+import { type MouseEvent, useState, Dispatch, SetStateAction } from "react";
 
 import {
   AlertDialog,
@@ -25,10 +25,12 @@ const ExampleCommentActionsDropdown = ({
   children,
   commentId,
   withoutEdit,
+  setIsEditing,
 }: {
   children: React.ReactNode;
   commentId: string;
   withoutEdit?: boolean;
+  setIsEditing: Dispatch<SetStateAction<boolean>>;
 }) => {
   const ctx = api.useContext();
   const router = useRouter();
@@ -102,6 +104,7 @@ const ExampleCommentActionsDropdown = ({
               onClick={(e) => {
                 e.stopPropagation();
                 // void router.push(`/example-posts/${postId}/edit`);
+                setIsEditing(true);
               }}
             >
               <Edit className="mr-2 h-4 w-4" />
