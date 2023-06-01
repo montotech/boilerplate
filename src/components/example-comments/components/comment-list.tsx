@@ -7,6 +7,10 @@ import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { ActionsTopbar } from "@/components/layout/actions-topbar";
+import { ExampleCommentActionsDropdown } from "@/components/example-comments/components/actions-dropdown";
+import { Button } from "@/components/ui/button";
+import { MoreHorizontal } from "lucide-react";
 
 dayjs.extend(relativeTime);
 
@@ -56,8 +60,8 @@ const CommentItem = ({
   const canEdit = item.author.id === user.id;
 
   return (
-    <div className="border-gray mt-5 flex gap-x-3 border-t pt-5">
-      <div>
+    <div className="border-gray mt-8 flex items-start justify-between border-t ">
+      <div className="flex gap-x-3 pt-5">
         <Image
           src={user.profileImageUrl}
           alt={`${user.firstName ?? "user"}'s profile picture`}
@@ -65,17 +69,28 @@ const CommentItem = ({
           height={42}
           className="rounded-full"
         />
-      </div>
-      <div className="flex flex-col">
-        <div className="flex flex-col ">
-          <p className="font-semibold">
-            {user.fullName} ·{" "}
-            <span className="text-sm font-thin">
-              {dayjs(item.comment.createdAt).fromNow()}
-            </span>
-          </p>
-          <p>{item.comment.content}</p>
+        <div className="flex flex-col">
+          <div className="flex flex-col ">
+            <p className="font-semibold">
+              {user.fullName} ·{" "}
+              <span className="text-sm font-thin">
+                {dayjs(item.comment.createdAt).fromNow()}
+              </span>
+            </p>
+            <p>{item.comment.content}</p>
+          </div>
         </div>
+      </div>
+      <div>
+        {canEdit && (
+          <ExampleCommentActionsDropdown commentId={item.comment.id}>
+            <Button variant="ghost" asChild>
+              <div>
+                <MoreHorizontal className="h-4 w-4" />
+              </div>
+            </Button>
+          </ExampleCommentActionsDropdown>
+        )}
       </div>
     </div>
   );

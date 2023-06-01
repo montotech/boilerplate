@@ -55,7 +55,11 @@ const CommentInput = ({ postId }: Props) => {
             {...form.register("content")}
           />
           <Button disabled={isLoading} className="disabled:bg-gray-800">
-            {isLoading ? <Loader2 /> : "Reply"}
+            {isLoading ? (
+              <Loader2 className="animate-spin text-slate-300" />
+            ) : (
+              "Reply"
+            )}
           </Button>
         </div>
         {form.formState.errors.content?.message && (
