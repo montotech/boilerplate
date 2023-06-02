@@ -28,7 +28,7 @@ const CommentInput = ({ postId, commentId, isUpdate, setIsEditing }: Props) => {
     api.exampleComment.create.useMutation({
       onSuccess: async () => {
         toast({
-          description: "Reply sent successfully!",
+          description: "Comment sent successfully!",
         });
 
         await ctx.exampleComment.invalidate();
@@ -54,7 +54,7 @@ const CommentInput = ({ postId, commentId, isUpdate, setIsEditing }: Props) => {
     api.exampleComment.update.useMutation({
       onSuccess: async () => {
         toast({
-          description: "Reply updated successfully!",
+          description: "Comment updated successfully!",
         });
 
         await ctx.exampleComment.invalidate();
@@ -104,7 +104,7 @@ const CommentInput = ({ postId, commentId, isUpdate, setIsEditing }: Props) => {
           <input type="hidden" value={postId} {...form.register("postId")} />
           <Input
             type="text"
-            placeholder="Your reply"
+            placeholder="Your comment"
             defaultValue={isUpdate && !!comment ? comment.content : undefined}
             {...form.register("content")}
           />
