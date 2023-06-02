@@ -1,5 +1,4 @@
 import React from "react";
-import { Layout } from "@/components/layout/layout";
 import { LoadingPage } from "@/components/ui/loading";
 import { api, type RouterOutputs } from "@/lib/api";
 import { type UserResource } from "@clerk/types";
@@ -7,10 +6,9 @@ import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { ActionsTopbar } from "@/components/layout/actions-topbar";
 import { ExampleCommentActionsDropdown } from "@/components/example-comments/components/actions-dropdown";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
+import { Loader2, MoreHorizontal } from "lucide-react";
 import CommentInput from "@/components/example-comments/components/comment-input";
 
 dayjs.extend(relativeTime);
@@ -21,22 +19,18 @@ interface Props {
 
 const CommentList = ({ postId }: Props) => {
   const { user } = useUser();
-  const { data } = api.exampleComment.list.useInfiniteQuery(
-    {
-      limit: 10,
-      postId: postId,
-    },
-    {
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
-    }
-  );
-
-  if (!data || !user)
-    return (
-      <Layout noPadding fullScreenOnMobile>
-        <LoadingPage />
-      </Layout>
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    api.exampleComment.list.useInfiniteQuery(
+      {
+        limit: 10,
+        postId: postId,
+      },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+      }
     );
+
+  if (!data || !user) return <LoadingPage />;
 
   const comments = data?.pages.flatMap((page) => page.items);
 
@@ -45,6 +39,20 @@ const CommentList = ({ postId }: Props) => {
       {comments.map((item) => (
         <CommentItem item={item} user={user} key={item.comment.id} />
       ))}
+      <div className="w-full text-center">
+        {hasNextPage && (
+          <Button
+            onClick={() => void fetchNextPage().catch(console.error)}
+            variant="ghost"
+            disabled={isFetchingNextPage}
+          >
+            {isFetchingNextPage && (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            )}
+            Load more
+          </Button>
+        )}
+      </div>
     </div>
   );
 };
