@@ -41,7 +41,6 @@ const ExampleCommentActionsDropdown = ({
       });
 
       await ctx.exampleComment.list.invalidate();
-      // await router.push("/example-posts");
     },
     onError: (e) => {
       const errorMessage = e.data?.zodError?.fieldErrors.content;
@@ -65,7 +64,6 @@ const ExampleCommentActionsDropdown = ({
     deleteMutation.mutate(commentId);
     ctx.exampleComment.invalidate().catch(console.error);
     setIsOpen(false);
-    // void router.push("/example-posts");
   };
 
   const DeleteConfirmationDialog = () => {
@@ -103,7 +101,6 @@ const ExampleCommentActionsDropdown = ({
             <DropdownMenuItem
               onClick={(e) => {
                 e.stopPropagation();
-                // void router.push(`/example-posts/${postId}/edit`);
                 setIsEditing(true);
               }}
             >
