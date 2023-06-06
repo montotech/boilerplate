@@ -84,7 +84,7 @@ const CommentItem = ({
         </div>
 
         {!isEditing ? (
-          <div className="flex flex-col ">
+          <div className="flex flex-1 flex-col">
             <div className="flex flex-col ">
               <p className="font-semibold">
                 {user.fullName} ·{" "}
@@ -92,7 +92,9 @@ const CommentItem = ({
                   {dayjs(item.comment.createdAt).fromNow()}
                 </span>
               </p>
-              <p>{item.comment.content}</p>
+              <div>
+                <p>{item.comment.content}</p>
+              </div>
             </div>
           </div>
         ) : (
