@@ -102,8 +102,8 @@ const CommentItem = ({ item }: { item: ExampleComment }) => {
           </div>
         )}
       </div>
-      <div>
-        {user && canEdit && (
+      {user && canEdit && (
+        <div className="m-2">
           <ExampleCommentActionsDropdown
             commentId={item.comment.id}
             setIsEditing={setIsEditing}
@@ -114,8 +114,8 @@ const CommentItem = ({ item }: { item: ExampleComment }) => {
               </div>
             </Button>
           </ExampleCommentActionsDropdown>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
