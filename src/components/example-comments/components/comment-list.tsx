@@ -1,17 +1,13 @@
 import React from "react";
 import { LoadingPage } from "@/components/ui/loading";
 import { api, type RouterOutputs } from "@/lib/api";
-import { type UserResource } from "@clerk/types";
 import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "@/lib/dayjs";
 import { ExampleCommentActionsDropdown } from "@/components/example-comments/components/actions-dropdown";
 import { Button } from "@/components/ui/button";
 import { Loader2, MoreHorizontal } from "lucide-react";
 import CommentInput from "@/components/example-comments/components/comment-input";
-
-dayjs.extend(relativeTime);
 
 interface Props {
   postId: string;
