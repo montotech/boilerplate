@@ -13,6 +13,12 @@ export default class ClerkUserEntity {
     return usersForClient;
   }
 
+  async listUsersForComment(userIds: string[]) {
+    const users = await this.list(userIds);
+    const usersForComment = users.map(this.filterUserForComment.bind(this));
+    return usersForComment;
+  }
+
   private async find(userId: string) {
     return await clerkClient.users.getUser(userId);
   }
@@ -29,6 +35,15 @@ export default class ClerkUserEntity {
     return {
       id: user.id,
       firstName: user.firstName,
+      profileImageUrl: user.profileImageUrl,
+    };
+  }
+
+  private filterUserForComment(user: User) {
+    return {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
       profileImageUrl: user.profileImageUrl,
     };
   }
