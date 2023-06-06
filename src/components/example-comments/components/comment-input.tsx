@@ -104,7 +104,7 @@ const CommentInput = ({ postId, commentId, isUpdate, setIsEditing }: Props) => {
           <input type="hidden" value={postId} {...form.register("postId")} />
           <Input
             type="text"
-            placeholder="Your comment"
+            placeholder={!isUpdate ? "Your comment" : ""}
             defaultValue={isUpdate && !!comment ? comment.content : undefined}
             {...form.register("content")}
           />

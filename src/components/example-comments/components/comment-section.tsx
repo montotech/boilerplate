@@ -8,7 +8,7 @@ interface Props {
 
 const CommentSection = ({ postId }: Props) => {
   return (
-    <div className="mt-5">
+    <div className="border-gray mt-5 border-t pt-8">
       <CommentInput postId={postId} />
       <CommentList postId={postId} />
     </div>

@@ -61,7 +61,7 @@ const CommentItem = ({ item }: { item: ExampleComment }) => {
   const canEdit = item.author.id === user?.id;
 
   return (
-    <div className="border-gray mt-8 flex items-start justify-between border-t ">
+    <div className=" mt-8 flex items-start justify-between ">
       <div className="flex w-full gap-x-3 pt-5">
         <div>
           <Image
