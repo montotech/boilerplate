@@ -103,7 +103,7 @@ export default class ExampleCommentEntity {
     const userIdsFromComments: string[] = comments.map(
       (comment) => comment.authorId
     );
-    const users = await new ClerkUserEntity().listUsersForClient(
+    const users = await new ClerkUserEntity().listUsersForComment(
       userIdsFromComments
     );
 
@@ -119,7 +119,7 @@ export default class ExampleCommentEntity {
 
   private mapAuthorToComment(
     comment: ExampleComment,
-    users: AsyncReturnType<typeof ClerkUserEntity.prototype.listUsersForClient>
+    users: AsyncReturnType<typeof ClerkUserEntity.prototype.listUsersForComment>
   ) {
     const author = users.find((user) => user.id === comment.authorId);
 

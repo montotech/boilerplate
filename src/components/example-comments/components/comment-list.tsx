@@ -18,7 +18,6 @@ interface Props {
 }
 
 const CommentList = ({ postId }: Props) => {
-  const { user } = useUser();
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
     api.exampleComment.list.useInfiniteQuery(
       {
@@ -30,14 +29,14 @@ const CommentList = ({ postId }: Props) => {
       }
     );
 
-  if (!data || !user) return <LoadingPage />;
+  if (!data) return <LoadingPage />;
 
   const comments = data?.pages.flatMap((page) => page.items);
 
   return (
     <div>
       {comments.map((item) => (
-        <CommentItem item={item} user={user} key={item.comment.id} />
+        <CommentItem item={item} key={item.comment.id} />
       ))}
       <div className="mt-5 w-full text-center">
         {hasNextPage && (
@@ -59,24 +58,19 @@ const CommentList = ({ postId }: Props) => {
 
 type ExampleComment = RouterOutputs["exampleComment"]["list"]["items"][number];
 
-const CommentItem = ({
-  item,
-  user,
-}: {
-  item: ExampleComment;
-  user: UserResource;
-}) => {
+const CommentItem = ({ item }: { item: ExampleComment }) => {
   const [isEditing, setIsEditing] = React.useState(false);
+  const { user } = useUser();
 
-  const canEdit = item.author.id === user.id;
+  const canEdit = item.author.id === user?.id;
 
   return (
     <div className="border-gray mt-8 flex items-start justify-between border-t ">
       <div className="flex w-full gap-x-3 pt-5">
         <div>
           <Image
-            src={user.profileImageUrl}
-            alt={`${user.firstName ?? "user"}'s profile picture`}
+            src={item.author.profileImageUrl}
+            alt={`${item.author.firstName ?? "user"}'s profile picture`}
             width={42}
             height={42}
             className="rounded-full"
@@ -87,7 +81,7 @@ const CommentItem = ({
           <div className="flex flex-1 flex-col">
             <div className="flex flex-col ">
               <p className="font-semibold">
-                {user.fullName} ·{" "}
+                {item.author.firstName} {item.author.lastName} ·{" "}
                 <span className="text-sm font-thin">
                   {dayjs(item.comment.createdAt).fromNow()}
                 </span>
@@ -109,7 +103,7 @@ const CommentItem = ({
         )}
       </div>
       <div>
-        {canEdit && (
+        {user && canEdit && (
           <ExampleCommentActionsDropdown
             commentId={item.comment.id}
             setIsEditing={setIsEditing}
