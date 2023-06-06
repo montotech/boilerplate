@@ -39,7 +39,7 @@ const CommentList = ({ postId }: Props) => {
       {comments.map((item) => (
         <CommentItem item={item} user={user} key={item.comment.id} />
       ))}
-      <div className="w-full text-center">
+      <div className="mt-5 w-full text-center">
         {hasNextPage && (
           <Button
             onClick={() => void fetchNextPage().catch(console.error)}

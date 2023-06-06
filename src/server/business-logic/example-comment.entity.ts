@@ -85,6 +85,7 @@ export default class ExampleCommentEntity {
 
     const comments = await prisma.exampleComment.findMany({
       take: limit + 1,
+      cursor: cursor ? { id: cursor } : undefined,
       where: {
         postId: params.postId,
       },
@@ -95,11 +96,13 @@ export default class ExampleCommentEntity {
 
     let nextCursor: typeof cursor;
     if (comments.length > limit) {
-      const lastComment = comments[limit];
-      nextCursor = lastComment?.id;
+      const nextComment = comments.pop();
+      nextCursor = nextComment?.id;
     }
 
-    const userIdsFromComments = comments.map((comment) => comment.authorId);
+    const userIdsFromComments: string[] = comments.map(
+      (comment) => comment.authorId
+    );
     const users = await new ClerkUserEntity().listUsersForClient(
       userIdsFromComments
     );
